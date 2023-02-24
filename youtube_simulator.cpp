@@ -104,19 +104,62 @@ void read_database(Database &database) {
     read_users(database);
 }
 
+bool check_login(Database database, string username, string password){
+    for (auto user : database.users) {
+        if ((user.username == username || (user.email == username)) && user.password == password) {
+            return true;
+        }
+    }
+    return false;
+}
+
+void login() {
+
+
+
+
+    exit(0);
+}
+
 
 int main() {
 
     Database database;
     read_database(database);
     
-    cout << "########## Wwelcome to Youtube ##########\n\n";
+    cout << "########## Welcome to Youtube ##########\n\n";
     cout << "Please Log In or Register!\n";
     cout << "1) Login\n";
     cout << "2) Register\n";
-    cout << "Please choose your option:... ";
-    string value;
-    cin >> value;
+    while (true) {
+        string value;
+        cout << "Please choose your option:... ";
+        cin >> value;
+        if(value != "1" && value!="2"){
+            cout<< "Sorry, wrong option, please try again\n";
+            continue;
+        }
+        if (value == "1") {
+            while (true) {
+                cout<<"Username/email: ";
+                string username;
+                cin >> username;
+                cout<<"Password: ";
+                string password;
+                cin >> password;
+                if (check_login(database, username, password)) {
+                    cout << "Logged In Succesfully!\n";
+                    login();
+                }
+                else {
+                    cout << "Sorry, wrong credentials, please try again!\n";
+                }
+            }
+        }
+        
+    }
+    
+
     
    
 
