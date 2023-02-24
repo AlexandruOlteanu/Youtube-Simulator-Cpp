@@ -110,6 +110,13 @@ int main() {
     Database database;
     read_database(database);
     
+    cout << "########## Wwelcome to Youtube ##########\n\n";
+    cout << "Please Log In or Register!\n";
+    cout << "1) Login\n";
+    cout << "2) Register\n";
+    cout << "Please choose your option:... ";
+    string value;
+    cin >> value;
     
    
 
