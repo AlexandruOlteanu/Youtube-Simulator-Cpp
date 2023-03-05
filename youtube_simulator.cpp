@@ -124,9 +124,22 @@ User get_user(Database database, string username, string password) {
     return found_user;
 }
 
+void write_database_users(Database database) {
+    ofstream output("Database/users.txt");
+    output << database.users.size() << '\n';
+    for (User user : database.users) {
+        output<<user.name<<"\n"<<user.surname<<"\n"<<user.username<<"\n"<<user.email<<"\n";
+        output<<user.birthday.day<<"."<<user.birthday.month<<"."<<user.birthday.year<<"\n";
+        output<<user.location.country<<", "<<user.location.city<<"\n";
+        output<<user.password<<"\n";
+        output << "\n";
+    }
+}
+
+
 void user_login(Database &database, User user) {
 
-
+    // Userul realizeaza actiuni
 
 
 
@@ -135,17 +148,50 @@ void user_login(Database &database, User user) {
     exit(0);
 }
 
+bool valid_email(Database database, string email) {
+    for (User user : database.users) {
+        if (user.email == email) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool valid_username(Database database, string username){
+    for(User user : database.users){
+        if(user.username==username){
+            return false;
+        }
+    }
+    return true;
+}
+
 void user_register(Database &database) {
     User user;
-
     cout<<"\nPlease enter your name: ";
     cin>>user.name;
     cout <<"\nPlease enter your surname: ";
     cin >> user.surname;
-    cout<<"\nPlease enter your email: ";
-    cin>>user.email;
-    cout<<"\nPlease enter your username: ";
-    cin>>user.username;
+    while (true) {
+        cout<<"\nPlease enter your email: ";
+        cin >> user.email;
+        if (valid_email(database, user.email)) {
+            break;
+        }
+        else {
+            cout << "\nError, email is taken!";
+        }
+    }
+    while(true){
+        cout<<"\nPlease enter your username: ";
+        cin>>user.username;
+        if(valid_username(database, user.username)){
+            break;
+        }
+        else{
+            cout<<"\nError, username is taken!";
+        }
+    }
     cout<<"\nPlease enter your password: ";
     cin>>user.password;
     cout<<"\nPlease enter your birthday: \n";
@@ -164,7 +210,9 @@ void user_register(Database &database) {
     cin >> city;
     user.location.city = city;
     database.users.push_back(user);
+
     cout<<"\n\nWelcome to Youtube!\n";
+    write_database_users(database);
     user_login(database, user);
 }
 
