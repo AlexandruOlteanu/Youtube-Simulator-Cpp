@@ -113,12 +113,59 @@ bool check_login(Database database, string username, string password){
     return false;
 }
 
-void login() {
+User get_user(Database database, string username, string password) {
+    User found_user;
+    for (auto user : database.users) {
+        if ((user.username == username || (user.email == username)) && user.password == password) {
+            found_user = user;
+            return found_user;
+        }
+    }
+    return found_user;
+}
+
+void user_login(Database &database, User user) {
+
+
+
 
 
 
 
     exit(0);
+}
+
+void user_register(Database &database) {
+    User user;
+
+    cout<<"\nPlease enter your name: ";
+    cin>>user.name;
+    cout <<"\nPlease enter your surname: ";
+    cin >> user.surname;
+    cout<<"\nPlease enter your email: ";
+    cin>>user.email;
+    cout<<"\nPlease enter your username: ";
+    cin>>user.username;
+    cout<<"\nPlease enter your password: ";
+    cin>>user.password;
+    cout<<"\nPlease enter your birthday: \n";
+    cout <<"\n          Day: ";
+    cin >> user.birthday.day;
+    cout <<"\n          Month: ";
+    cin >> user.birthday.month;
+    cout <<"\n          Year: ";
+    cin >> user.birthday.year;
+    cout <<"\nPlease enter your coutry: ";
+    string country;
+    cin >> country;
+    user.location.country = country;
+    cout << "\nPlease enter your city: ";
+    string city;
+    cin >> city;
+    user.location.city = city;
+    database.users.push_back(user);
+    cout<<"\n\nWelcome to Youtube!\n";
+    user_login(database, user);
 }
 
 
@@ -131,10 +178,14 @@ int main() {
     cout << "Please Log In or Register!\n";
     cout << "1) Login\n";
     cout << "2) Register\n";
+    cout << "3) Exit\n";
     while (true) {
         string value;
         cout << "Please choose your option:... ";
         cin >> value;
+        if (value == "3") {
+            exit(0);
+        }
         if(value != "1" && value!="2"){
             cout<< "Sorry, wrong option, please try again\n";
             continue;
@@ -149,12 +200,15 @@ int main() {
                 cin >> password;
                 if (check_login(database, username, password)) {
                     cout << "Logged In Succesfully!\n";
-                    login();
+                    user_login(database, get_user(database, username, password));
                 }
                 else {
                     cout << "Sorry, wrong credentials, please try again!\n";
                 }
             }
+        }
+        if(value=="2"){
+            user_register(database);
         }
         
     }
