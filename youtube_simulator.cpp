@@ -166,6 +166,16 @@ bool valid_username(Database database, string username){
     return true;
 }
 
+string encryption_password(string password){
+     string encrypted = "";
+     for(int i=0; i < password.size(); i++){
+         char p;
+         p=password[i];
+         encrypted +=p*2+12;
+     }
+     return encrypted;
+}
+
 void user_register(Database &database) {
     User user;
     cout<<"\nPlease enter your name: ";
@@ -194,6 +204,7 @@ void user_register(Database &database) {
     }
     cout<<"\nPlease enter your password: ";
     cin>>user.password;
+    user.password=encryption_password(user.password);
     cout<<"\nPlease enter your birthday: \n";
     cout <<"\n          Day: ";
     cin >> user.birthday.day;
@@ -246,6 +257,7 @@ int main() {
                 cout<<"Password: ";
                 string password;
                 cin >> password;
+                password=encryption_password(password);
                 if (check_login(database, username, password)) {
                     cout << "Logged In Succesfully!\n";
                     user_login(database, get_user(database, username, password));
